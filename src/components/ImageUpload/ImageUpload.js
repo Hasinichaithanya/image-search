@@ -1,4 +1,4 @@
-// ImageUpload.js
+// importing the necessary modules and packages
 import { createClient } from "pexels";
 import { v1 as uuidv1 } from "uuid";
 import React from "react";
@@ -27,24 +27,26 @@ class ImageUpload extends React.Component {
   }
 
   async callAnalyzeImage() {
+    //resetting the data
     this.setState({
       photos: [],
       labels: [],
       isLoading: true,
       isFetched: false,
     });
+    //API Key of google vision API
     const API_KEY = "AIzaSyB4bDg0E3X9hQ_BxRv6Qc1wJMeXNHmqyiA";
     const API_URL = `https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}`;
-
+    //client for making requests to pexels API
     const client = createClient(
       "jQBQSGlNdNoKmNOgWrNM1l7pdljRDDsStJCbfsFZmm8DbN3eOIWLhCwe"
     );
 
     const { file } = this.state;
-    console.log(file);
+    //using try and catch to handle the errors
     try {
       const base64Image = await this.getBase64(file);
-
+      //request body for the google vision api
       const requestBody = {
         requests: [
           {
@@ -55,16 +57,18 @@ class ImageUpload extends React.Component {
           },
         ],
       };
-
+      //making the post request to Google Cloud Vision API
       const response = await axios.post(API_URL, requestBody, {
         headers: {
           "Content-Type": "application/json",
         },
       });
+      //retrieving the labels from result
       const data = response.data["responses"][0]["labelAnnotations"];
       const labels = data.map((item) => item.description);
+      //setting the labels in the state
       this.setState({ labels });
-
+      //making the requests to pexels API for every label
       const searchPromises = labels.map((label) => {
         return client.photos.search({ query: label, per_page: 1 });
       });
@@ -76,10 +80,10 @@ class ImageUpload extends React.Component {
           alt: photo["alt"],
         };
       });
-
+      //fetching the labels and data is completed and setting the states to retrieved reesult
       this.setState({ photos, isFetched: true, isLoading: false });
-      console.log(photos);
     } catch (error) {
+      //handling the errors
       this.setState({
         isFetched: false,
         isLoading: false,
@@ -88,6 +92,7 @@ class ImageUpload extends React.Component {
     }
   }
 
+  //converting the image file to base64
   getBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -97,8 +102,11 @@ class ImageUpload extends React.Component {
     });
   }
 
+  //handling the image change event
   onImageChange(event) {
+    //checking whether the file is selected or not
     if (event.target.files && event.target.files[0]) {
+      //checking the type of the file
       if (
         event.target.files[0].type === "image/jpeg" ||
         event.target.files[0].type === "image/png" ||
@@ -119,7 +127,7 @@ class ImageUpload extends React.Component {
       }
     }
   }
-
+  //handling the error and retry button
   handleRetryBtn = () => {
     this.setState({
       photos: [],
@@ -130,14 +138,80 @@ class ImageUpload extends React.Component {
       errMsg: "",
     });
   };
+  //displaying the labels of the image
+  renderLabels = () => {
+    const { labels } = this.state;
+
+    return (
+      <>
+        <p className="result-top-line">
+          Here is the analysis of the given image...Here is what we found in the
+          image
+        </p>
+        <ul className="res-labels-container">
+          {labels.map((label) => (
+            <li key={uuidv1()} className="res-label">
+              {label}
+            </li>
+          ))}
+        </ul>
+      </>
+    );
+  };
+  //displaying the result images
+  renderImages = () => {
+    const { photos } = this.state;
+
+    return (
+      <>
+        <p className="result-top-line">Here are the similar images...</p>
+        <ul className="res-images-container">
+          {photos.map((image) => (
+            <li key={uuidv1()} className="image-container">
+              <img src={image.src} alt={image.alt} className="res-image" />
+              <p className="image-alt">{image.alt}</p>
+            </li>
+          ))}
+        </ul>
+      </>
+    );
+  };
+
+  //displaying the loading when the data is being fetched
+  renderLoading = () => {
+    return (
+      <Audio
+        height="80"
+        width="80"
+        radius="9"
+        color="green"
+        ariaLabel="loading"
+        wrapperStyle
+        wrapperClass
+      />
+    );
+  };
+
+  //displaying the error messsage
+  renderErrMsg = () => {
+    const { errMsg } = this.state;
+    return (
+      <>
+        <p className="err-msg">{errMsg}!!</p>
+        <button onClick={this.handleRetryBtn} className="retry-btn">
+          Retry
+        </button>
+      </>
+    );
+  };
 
   render() {
-    const { photos, labels, isFetched, isLoading, errMsg } = this.state;
-    console.log(typeof errMsg);
+    const { isFetched, isLoading, errMsg } = this.state;
     return (
       <div className="main-container">
         <div className="sub-container">
           <div>
+            <h1>Image Search</h1>
             <p className="welcome-note">
               Welcome!
               <br /> This is a website used to analyse the given image and give
@@ -148,6 +222,7 @@ class ImageUpload extends React.Component {
             </p>
           </div>
           <h2>Upload your image</h2>
+          {/* input container */}
           <div className="input-container">
             <input
               type="file"
@@ -156,6 +231,7 @@ class ImageUpload extends React.Component {
               onChange={this.onImageChange}
             />
             <div>
+              {/* displaying the selected image */}
               {this.state.file && (
                 <img
                   src={URL.createObjectURL(this.state.file)}
@@ -165,60 +241,23 @@ class ImageUpload extends React.Component {
               )}
             </div>
           </div>
-
+          {/* result container */}
           <div className="result-container">
             <button className="analyse-btn" onClick={this.analyzeImage}>
               Analyse the image
             </button>
-            {isLoading && (
-              <Audio
-                height="80"
-                width="80"
-                radius="9"
-                color="green"
-                ariaLabel="loading"
-                wrapperStyle
-                wrapperClass
-              />
-            )}
+            {/* displaying the loading when the data is being fetched */}
+            {isLoading && this.renderLoading()}
+            {/*displaying the data after it is fetched */}
             {isFetched && (
               <div className="results">
-                <p className="result-top-line">
-                  Here is the analysis of the given image...Here is what we
-                  found in the image
-                </p>
-                <ul className="res-labels-container">
-                  {labels.map((label) => (
-                    <li key={uuidv1()} className="res-label">
-                      {label}
-                    </li>
-                  ))}
-                </ul>
-                <p className="result-top-line">
-                  Here are the similar images...
-                </p>
-                <ul className="res-images-container">
-                  {photos.map((image) => (
-                    <li key={uuidv1()} className="image-container">
-                      <img
-                        src={image.src}
-                        alt={image.alt}
-                        className="res-image"
-                      />
-                      <p className="image-alt">{image.alt}</p>
-                    </li>
-                  ))}
-                </ul>
+                {this.renderLabels()}
+                <br />
+                {this.renderImages()}
               </div>
             )}
-            {errMsg && (
-              <>
-                <p className="err-msg">{errMsg}!!</p>
-                <button onClick={this.handleRetryBtn} className="retry-btn">
-                  Retry
-                </button>
-              </>
-            )}
+            {/*displaying the error, if it is occurred*/}
+            {errMsg && this.renderErrMsg()}
           </div>
           <p>
             We have integrated google cloud vision API for the image analysation

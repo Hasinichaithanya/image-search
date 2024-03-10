@@ -28,6 +28,14 @@ p {
   justify-content: center;
   max-width: 90%;
 }
+h1 {
+  background-color: #c7f6ff;
+  max-width: 90vw;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0px 4px 0px 2px #b4e7f1;
+}
 .welcome-note {
   font-weight: 600;
   font-size: 25px;
@@ -39,7 +47,7 @@ p {
   border-radius: 10px;
   margin-bottom: 20px;
   padding: 10px;
-  max-width: 95%;
+  max-width: 97%;
 }
 .file-input {
   border-radius: 5px;
