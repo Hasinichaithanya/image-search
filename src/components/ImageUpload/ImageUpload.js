@@ -188,6 +188,7 @@ class ImageUpload extends React.Component {
         ariaLabel="loading"
         wrapperStyle
         wrapperClass
+        className="loader"
       />
     );
   };

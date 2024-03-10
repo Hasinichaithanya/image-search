@@ -162,6 +162,9 @@ h1 {
   padding: 10px;
   cursor: pointer;
 }
+.loader {
+  margin: 15px;
+}
 @media (max-width: 660px) {
   .input-container {
     max-width: 100%;
