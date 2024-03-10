@@ -87,7 +87,7 @@ h1 {
   padding: 10px;
   font-weight: bold;
   cursor: pointer;
-  margin: 20px;
+  margin-top: 17px;
 }
 .analyse-btn:hover {
   background-color: #007bff;
@@ -202,6 +202,9 @@ h1 {
   .image-alt {
     font-size: 15px;
   }
+  .analyse-btn {
+    margin-bottom: 20px;
+  }
 }
 @media (min-width: 670px) {
   .image-container {
@@ -212,5 +215,9 @@ h1 {
   .image-alt {
     font-weight: 500;
     width: 100%;
+  }
+  .last-para {
+    position: relative;
+    top: -20px;
   }
 }

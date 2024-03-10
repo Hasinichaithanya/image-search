@@ -188,7 +188,6 @@ class ImageUpload extends React.Component {
         ariaLabel="loading"
         wrapperStyle
         wrapperClass
-        className="loader"
       />
     );
   };
@@ -248,7 +247,7 @@ class ImageUpload extends React.Component {
               Analyse the image
             </button>
             {/* displaying the loading when the data is being fetched */}
-            {isLoading && this.renderLoading()}
+            <div className="loader"> {isLoading && this.renderLoading()}</div>
             {/*displaying the data after it is fetched */}
             {isFetched && (
               <div className="results">
