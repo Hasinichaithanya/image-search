@@ -102,6 +102,7 @@ h1 {
 .result-top-line {
   font-weight: 600;
   font-size: 18px;
+  padding-left: 10px;
   text-align: center;
 }
 .res-labels-container {
