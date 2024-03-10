@@ -259,7 +259,7 @@ class ImageUpload extends React.Component {
             {/*displaying the error, if it is occurred*/}
             {errMsg && this.renderErrMsg()}
           </div>
-          <p>
+          <p className="last-para">
             We have integrated google cloud vision API for the image analysation
             and used external APIs to fetch the similar products for the data
             recieved from the analysis.

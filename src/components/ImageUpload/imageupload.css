@@ -164,7 +164,7 @@ h1 {
 }
 @media (max-width: 660px) {
   .input-container {
-    width: 100%;
+    max-width: 100%;
   }
   .main-container {
     flex-direction: column;
@@ -176,6 +176,8 @@ h1 {
   .results {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   .res-images-container {
     flex-direction: column;
@@ -186,7 +188,16 @@ h1 {
     box-shadow: none;
   }
   .result-top-line {
-    padding-left: 10px;
+    font-size: 17px;
+    text-align: center;
+    max-width: 80%;
+  }
+  .last-para {
+    position: relative;
+    top: -35px;
+  }
+  .image-alt {
+    font-size: 15px;
   }
 }
 @media (min-width: 670px) {
