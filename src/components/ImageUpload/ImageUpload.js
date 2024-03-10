@@ -34,8 +34,8 @@ class ImageUpload extends React.Component {
       isLoading: true,
       isFetched: false,
     });
-    //API Key of google vision API
-    const API_KEY = "AIzaSyB4bDg0E3X9hQ_BxRv6Qc1wJMeXNHmqyiA";
+    //use your API Key of google cloud vision API
+    const API_KEY = "";
     const API_URL = `https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}`;
     //client for making requests to pexels API
     const client = createClient(
